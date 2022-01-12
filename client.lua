@@ -5,16 +5,19 @@ AddEventHandler('DisconnectSync', function(_syncTable)
     syncTable = _syncTable
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Wait(0)
+        local sleep = true
         for k,v in pairs(syncTable) do
-            if GetDistanceBetweenCoords( v.coords.x, v.coords.y, v.coords.z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
+            if GetDistanceBetweenCoords( v.coords.x, v.coords.y, v.coords.z, GetEntityCoords(PlayerPedId())) < 10.0 then
+                sleep = false
                 Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.400, v.line1, 4, 0.075, 0.075)
                 Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.600, v.line2, 4, 0.075, 0.075)
                 Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.800, v.line3, 4, 0.075, 0.075)		
             end
         end
+        if sleep then Wait(1000) end
     end
 end)
 
