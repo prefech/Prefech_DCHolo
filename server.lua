@@ -1,21 +1,24 @@
---[[ Remove after 60 seconds ]]
-delay = 60
-color = '~r~'
-
 syncTable = {}
 count = 0
 
 AddEventHandler('playerDropped', function(reason)
+    if Config.DisplayId and not Config.DisplayName then
+        playerInfo = 'Player: ~w~'..source
+    elseif not Config.DisplayId and Config.DisplayName then
+        playerInfo = 'Player: ~w~'..GetPlayerName(source)
+    else
+        playerInfo = 'Player: ~w~'..source..' | '..GetPlayerName(source)
+    end
+    
     local args = {
         ['coords'] = GetEntityCoords(GetPlayerPed(source)),
-        ['line1'] = color..'Player: ~w~'..source,
-        ['line2'] = color..'Reason: ~w~'..reason,
-        ['line3'] = color..'Date/Time: ~w~'..os.date('%a %b %d %X %Y')
+        ['text'] = Config.color..''..playerInfo..'\n'..Config.color..'Reason: ~w~'..reason..'\n'..Config.color..'Time ago: ~w~ %s'
     }
     count = count + 1
     syncTable[count] = args,
+    Wait(1)
     TriggerClientEvent('DisconnectSync', -1, syncTable)
-    Citizen.Wait(delay * 1000)
+    Wait(Config.delay * 1000)
     syncTable[count] = nil
     TriggerClientEvent('DisconnectSync', -1, syncTable)
 end)

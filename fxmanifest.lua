@@ -1,15 +1,18 @@
 author 'Prefech'
-description 'Prefech DevResource (https://prefech.com/)'
-version '1.0.0'
+description 'Prefech DC Holo (https://prefech.com/)'
+version '1.0.1'
 url 'https://prefech.com'
 
 server_scripts {
-    'server.lua'
+    'server.lua',
+    'config.lua'
 } 
 
 client_scripts {
-    'client.lua'    
+    'client.lua',
+    'config.lua'
 }
 
+lua54 ' yes'
 game 'gta5'
 fx_version 'cerulean'

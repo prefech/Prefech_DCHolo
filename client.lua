@@ -1,18 +1,35 @@
 syncTable = {}
-count = 0
+countTable = {}
 RegisterNetEvent('DisconnectSync')
 AddEventHandler('DisconnectSync', function(_syncTable)
     syncTable = _syncTable
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Wait(1000)
         for k,v in pairs(syncTable) do
-            if GetDistanceBetweenCoords( v.coords.x, v.coords.y, v.coords.z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then
-                Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.400, v.line1, 4, 0.075, 0.075)
-                Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.600, v.line2, 4, 0.075, 0.075)
-                Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.800, v.line3, 4, 0.075, 0.075)		
+            if countTable[k] then
+                countTable[k] = countTable[k] + 1
+            end
+        end
+    end
+end)
+
+CreateThread(function()
+    while true do
+        Wait(0)
+        for k,v in pairs(syncTable) do
+            if not countTable[k] then countTable[k] = 0 end
+            close = false
+            if GetDistanceBetweenCoords( v.coords.x, v.coords.y, v.coords.z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then                                
+                close = true
+                Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.400, v.text:format(string.format("%02d:%02d",math.floor(countTable[k] / 60), math.floor(countTable[k] % 60))), 4, 0.075, 0.075)
+                if Config.marker then             
+                    DrawMarker(0, v.coords.x, v.coords.y, v.coords.z - 0.250, 0, 0, 0, 0, 0, 0, 0.5 ,0.5 ,0.5 ,Config.markerColor.r ,Config.markerColor.g ,Config.markerColor.b ,Config.markerColor.a ,true ,false ,false ,false )
+                end
+            else
+                if not close then Wait(1000) end
             end
         end
     end
@@ -27,7 +44,7 @@ function Draw3DText(x,y,z,textInput,fontId,scaleX,scaleY)
     SetTextScale(scaleX*scale, scaleY*scale)
     SetTextFont(fontId)
     SetTextProportional(1)
-    SetTextColour(250, 250, 250, 255)		-- You can change the text color here
+    SetTextColour(250, 250, 250, 255)
     SetTextDropshadow(1, 1, 1, 1, 255)
     SetTextEdge(2, 0, 0, 0, 150)
     SetTextDropShadow()
