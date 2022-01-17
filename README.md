@@ -1,6 +1,6 @@
-# This but than for free ;)
-https://forum.cfx.re/t/release-paid-anti-combat-logging/4800778
-https://www.youtube.com/watch?v=Rh1jLKW2aeg
+Made this for fun but since people seem to like it i might update is now and then ;)
+
+![screenshot](https://prefech.com/i/8f8597c3-058e-483d-9712-33e531e4acf3.png)
 
 ### for support join our discord lols
 https://discord.gg/prefech
