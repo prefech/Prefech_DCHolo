@@ -19,19 +19,18 @@ end)
 CreateThread(function()
     while true do
         Wait(0)
+        isClose = false
         for k,v in pairs(syncTable) do
-            if not countTable[k] then countTable[k] = 0 end
-            close = false
+            if not countTable[k] then countTable[k] = 0 end            
             if GetDistanceBetweenCoords( v.coords.x, v.coords.y, v.coords.z, GetEntityCoords(GetPlayerPed(-1))) < 10.0 then                                
-                close = true
+                isClose = true
                 Draw3DText( v.coords.x, v.coords.y, v.coords.z - 1.400, v.text:format(string.format("%02d:%02d",math.floor(countTable[k] / 60), math.floor(countTable[k] % 60))), 4, 0.075, 0.075)
                 if Config.marker then             
                     DrawMarker(0, v.coords.x, v.coords.y, v.coords.z - 0.250, 0, 0, 0, 0, 0, 0, 0.5 ,0.5 ,0.5 ,Config.markerColor.r ,Config.markerColor.g ,Config.markerColor.b ,Config.markerColor.a ,true ,false ,false ,false )
                 end
-            else
-                if not close then Wait(1000) end
             end
         end
+        if not isClose then Wait(1000) end
     end
 end)
 
