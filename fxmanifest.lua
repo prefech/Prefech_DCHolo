@@ -1,6 +1,6 @@
 author 'Prefech'
 description 'Prefech DC Holo (https://prefech.com/)'
-version '1.0.1'
+version '1.0.2'
 url 'https://prefech.com'
 
 server_scripts {

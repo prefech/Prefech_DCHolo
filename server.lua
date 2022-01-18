@@ -1,4 +1,5 @@
 syncTable = {}
+countTable = {}
 count = 0
 
 AddEventHandler('playerDropped', function(reason)
@@ -15,14 +16,25 @@ AddEventHandler('playerDropped', function(reason)
         ['text'] = Config.color..''..playerInfo..'\n'..Config.color..'Reason: ~w~'..reason..'\n'..Config.color..'Time ago: ~w~ %s'
     }
     count = count + 1
-    syncTable[count] = args,
+    syncTable[count] = args
     Wait(1)
-    TriggerClientEvent('DisconnectSync', -1, syncTable)
-    Wait(Config.delay * 1000)
-    syncTable[count] = nil
     TriggerClientEvent('DisconnectSync', -1, syncTable)
 end)
 
-AddEventHandler("playerJoining", function(source, oldID)
-    TriggerClientEvent('DisconnectSync', -1, syncTable)
+CreateThread(function()
+    while true do
+        Wait(1000)
+        for k,v in pairs(syncTable) do
+            if countTable[k] then
+                if countTable[k] >= Config.delay then
+                    countTable[k] = nil
+                    syncTable[k] = nil
+                else
+                    countTable[k] = countTable[k] + 1
+                end
+            else
+                countTable[k] = 0
+            end
+        end
+    end
 end)
